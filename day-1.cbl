@@ -12,12 +12,16 @@ input-output section.
 data division.
 file section.
 fd module-file.
+      *> Making this field numeric results in the contents being decimally left-justified for subsequent math!
 01 module-mass pic X(8).
 
 working-storage section.
 01 state.
        05 eof-ind pic x value "n".
        05 total-mass pic 9(8).
+       05 total-fuel pic 9(8).
+01 math.
+       05 module-fuel pic 9(8).
 
 
 procedure division.
@@ -29,8 +33,12 @@ procedure division.
        read-and-process.
            read module-file at end perform wrap-up.
            add function numval(module-mass) to total-mass.
+           divide function numval(module-mass) by 3 giving module-fuel.
+           subtract 2 from module-fuel.
+           add module-fuel to total-fuel.
            
        wrap-up.           
            move "Y" to eof-ind.
            display total-mass.
+           display total-fuel.
            close module-file.

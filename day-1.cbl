@@ -21,7 +21,7 @@ working-storage section.
        05 total-mass pic 9(8).
        05 total-fuel pic 9(8).
 01 math.
-       05 module-fuel pic 9(8).
+       05 module-fuel pic s9(8).
 
 
 procedure division.
@@ -35,7 +35,12 @@ procedure division.
            add function numval(module-mass) to total-mass.
            divide function numval(module-mass) by 3 giving module-fuel.
            subtract 2 from module-fuel.
+           perform add-fuel until module-fuel <= 0.
+
+       add-fuel.
            add module-fuel to total-fuel.
+           divide module-fuel by 3 giving module-fuel.
+           subtract 2 from module-fuel.
            
        wrap-up.           
            move "Y" to eof-ind.
